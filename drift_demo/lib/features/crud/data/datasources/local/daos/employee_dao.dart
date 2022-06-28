@@ -17,7 +17,7 @@ class EmployeeDao extends DatabaseAccessor<AppDataBase>
       await into(employeeTable).insert(employee);
     } catch (err) {
       print(err);
-      throw InsertException();
+      throw ServerException();
     }
   }
 
@@ -26,7 +26,7 @@ class EmployeeDao extends DatabaseAccessor<AppDataBase>
       await delete(employeeTable).delete(employee);
     } catch (err) {
       print(err);
-      throw InsertException();
+      throw ServerException();
     }
   }
 
@@ -36,7 +36,7 @@ class EmployeeDao extends DatabaseAccessor<AppDataBase>
       await update(employeeTable).replace(employee);
     } catch (err) {
       print(err);
-      throw InsertException();
+      throw ServerException();
     }
   }
 
@@ -45,7 +45,8 @@ class EmployeeDao extends DatabaseAccessor<AppDataBase>
       var res = await select(employeeTable).get();
       return res;
     } catch (err) {
-      throw InsertException();
+      print(err);
+      throw ServerException();
     }
   }
 }

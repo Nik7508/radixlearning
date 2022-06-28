@@ -5,7 +5,6 @@ import 'package:drift_demo/features/crud/domain/usecases/add_employee.dart';
 import 'package:drift_demo/features/crud/domain/usecases/delete_employee.dart';
 import 'package:drift_demo/features/crud/domain/usecases/get_all_employee.dart';
 import 'package:drift_demo/features/crud/domain/usecases/update_employee.dart';
-import 'package:drift_demo/features/crud/presentation/pages/updateClient.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import '../../data/datasources/local/database/employee_database.dart';
 import 'crud_state.dart';
@@ -42,10 +41,10 @@ class CrudCubit extends Cubit<CrudState> {
           employeeSalary: int.parse(employeeSalary),
           employeeJoiningDate: employeeJoiningDate));
       res.fold(
-        (l) {
-          print(l);
+        (failure) {
+          print(failure);
         },
-        (r) {
+        (success) {
           getData();
         },
       );
@@ -54,11 +53,10 @@ class CrudCubit extends Cubit<CrudState> {
 
   getData() async {
     var res = await getAllEmployee.call(NoParams());
-    res.fold((l) {
+    res.fold((failure) {
       emit(CrudSuccess(employees: []));
-    }, (r) {
-      print("er" + r.toString());
-      emit(CrudSuccess(employees: r));
+    }, (success) {
+      emit(CrudSuccess(employees: success));
     });
   }
 
@@ -66,10 +64,10 @@ class CrudCubit extends Cubit<CrudState> {
     emit(CrudLoading());
     var res = await deleteEmployee.call(employee);
     res.fold(
-      (l) {
-        print(l);
+      (failure) {
+        print(failure);
       },
-      (r) {
+      (success) {
         getData();
       },
     );
@@ -84,10 +82,10 @@ class CrudCubit extends Cubit<CrudState> {
     } else {
       var res = await updateEmployee.call(employee);
       res.fold(
-        (l) {
-          print(l);
+        (failure) {
+          print(failure);
         },
-        (r) {
+        (success) {
           getData();
         },
       );

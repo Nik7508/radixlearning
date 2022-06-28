@@ -16,9 +16,9 @@ class EmployeeRepositoryImpl extends EmployeeRepository {
   Future<Either<Failure, void>> addEmployee(Employee employee) async {
     try {
       await dao.insertEmployee(employee);
-      return Right(null);
-    } on InsertException {
-      return Left(InsertFailure());
+      return const Right(null);
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 
@@ -26,9 +26,9 @@ class EmployeeRepositoryImpl extends EmployeeRepository {
   Future<Either<Failure, void>> deleteEmployee(Employee employee) async {
     try {
       await dao.deleteEmployee(employee);
-      return Right(null);
-    } on InsertException {
-      return Left(InsertFailure());
+      return const Right(null);
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 
@@ -40,12 +40,11 @@ class EmployeeRepositoryImpl extends EmployeeRepository {
 
   @override
   Future<Either<Failure, void>> updateEmployee(Employee employee) async {
-    print("dsf" + employee.toString());
     try {
       await dao.updateEmployee(employee);
-      return Right(null);
-    } on InsertException {
-      return Left(InsertFailure());
+      return const Right(null);
+    } on ServerException {
+      return Left(ServerFailure());
     }
   }
 }
