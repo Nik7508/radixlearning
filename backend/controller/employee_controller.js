@@ -5,7 +5,6 @@ module.exports = {
     async create(req, res) {
         try {
             var employee = await new Employee(req.body);
-            employee._id = await incrementId(Employee);
             employee.save();
             res.status(200).send(employee);
         } catch (error) {
@@ -15,7 +14,8 @@ module.exports = {
     },
     async get(req, res) {
         try {
-            var employee = await Employee.find();
+            var employee = await Employee.find().select("-_id -__v");
+
             res.status(200).send(employee);
         } catch (error) {
             console.log(error);
@@ -24,7 +24,7 @@ module.exports = {
     },
     async delete(req, res) {
         try {
-            await Employee.deleteOne({ _id: req.params.id });
+            await Employee.deleteOne({ employeeId: parseInt(req.params.id) });
             res.send("Deleted!!!");
         } catch (error) {
             console.log(error);
@@ -33,8 +33,8 @@ module.exports = {
     },
     async update(req, res) {
         try {
-            await Employee.findByIdAndUpdate({ _id: req.body.employeeId }, req.body, { new: true });
-            
+            await Employee.updateOne({ employeeId: req.body.employeeId }, req.body, { new: true });
+
             res.send("update!!!");
         } catch (error) {
             console.log(error);

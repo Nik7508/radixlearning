@@ -1,17 +1,17 @@
 const mongoose = require("mongoose");
 
 const EmployeeModel = mongoose.Schema({
-    _id: {
-        type: Number
+    employeeId: {
+        type: Number, unique: true
     },
     employeeName: {
-        type: String,required:true
+        type: String, required: true
     },
     employeeSalary: {
-        type: Number,required:true,min:0
+        type: Number, required: true, min: 0
     },
     employeeJoiningDate: {
-        type: String,required:true
+        type: String, required: true
     },
 });
 
