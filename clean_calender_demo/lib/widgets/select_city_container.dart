@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class SelectCityContainer extends StatelessWidget {
   final String label, detail;
-  final String? subdetail;
+  final String? subDetail;
   final IconData iconData;
   final VoidCallback onTap;
 
@@ -10,7 +10,7 @@ class SelectCityContainer extends StatelessWidget {
       {super.key,
       required this.label,
       required this.detail,
-      this.subdetail,
+      this.subDetail,
       required this.iconData,
       required this.onTap});
 
@@ -49,7 +49,7 @@ class SelectCityContainer extends StatelessWidget {
                           fontSize: 16),
                       children: [
                         TextSpan(
-                            text: subdetail ?? "",
+                            text: subDetail ?? "",
                             style: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 12,
