@@ -6,39 +6,54 @@ import 'calender_state.dart';
 class CalenderCubit extends Cubit<CalenderState> {
   CleanCalendarController? cleanCalendarController;
 
+  String rooms = "1";
+  DateTime? inTime = DateTime.now();
+  DateTime? outTime = DateTime.now().add(const Duration(days: 1));
+
   CalenderCubit() : super(CalenderInitial());
-  init(checkInTime, checkOutTime) {
+  init() {
     cleanCalendarController = CleanCalendarController(
         minDate: DateTime.now(),
         maxDate: DateTime.now().add(const Duration(days: 365)),
         onRangeSelected: (checkInTime, checkOutTime) {
-          var ch = checkInTime;
           if (checkOutTime != null) {
             final diff = checkOutTime.difference(checkInTime).inDays;
             if (diff > 30) {
               emit(ErrorState(
                   error: "You can book hotel rooms for only 30 days."));
-              emit(DateSelectState(inTime: checkInTime, outTime: null));
+              inTime = checkInTime;
+              outTime = null;
+              emit(DateSelectState());
             } else {
               if (checkInTime == checkOutTime) {
-                emit(DateSelectState(inTime: checkInTime, outTime: null));
+                inTime = checkInTime;
+                outTime = null;
+                emit(DateSelectState());
               } else {
-                emit(DateSelectState(
-                    inTime: checkInTime, outTime: checkOutTime));
+                inTime = checkInTime;
+                outTime = checkOutTime;
+                emit(DateSelectState());
               }
             }
           } else {
-            emit(DateSelectState(inTime: checkInTime, outTime: null));
+            inTime = checkInTime;
+            outTime = checkOutTime;
+            emit(DateSelectState());
           }
         },
-        initialDateSelected: checkInTime,
-        endDateSelected: checkOutTime);
+        initialDateSelected: inTime,
+        endDateSelected: outTime);
   }
 
   clearCalender() {
     cleanCalendarController!.clearSelectedDates();
-    emit(DateSelectState(
-        inTime: DateTime.now(),
-        outTime: DateTime.now().add(Duration(days: 1))));
+    inTime = DateTime.now();
+    outTime = DateTime.now().add(Duration(days: 1));
+    emit(DateSelectState());
+  }
+
+  selectRoom(String rooms) {
+    this.rooms = rooms;
+    emit(NoOfRooms());
   }
 }
